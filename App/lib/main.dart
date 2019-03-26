@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:spacex_universe/dataModels/LaunchDataModel.dart';
 import 'package:spacex_universe/services/AppConstants.dart';
+import 'package:spacex_universe/services/NetworkAdapter.dart';
 
 void main() => runApp(SpaceXUniverseApp());
 
@@ -20,7 +22,6 @@ class SpaceXUniverseApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
-
   final String title;
 
   @override
@@ -29,9 +30,17 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
+  Future<LaunchDataModel> launchModel;
+
+  @override
+  void initState() {
+    super.initState();
+    NetworkAdapter a = new NetworkAdapter();
+    launchModel = a.getLastLaunch();
+  }
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
