@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:spacex_universe/dataModels/LaunchDataModel.dart';
+import 'package:spacex_universe/routes/LastLaunchRoute.dart';
 import 'package:spacex_universe/services/AppConstants.dart';
 import 'package:spacex_universe/services/NetworkAdapter.dart';
 
@@ -10,12 +11,12 @@ class SpaceXUniverseApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'SpaceX Universe',
+      title: AppConstants.APPBAR_TITLE_MAIN,
       theme: ThemeData(
 
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'SpaceX Universe'),
+      home: MyHomePage(title: AppConstants.APPBAR_TITLE_MAIN),
     );
   }
 }
@@ -53,6 +54,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   title: Text("Last launch", style: TextStyle(
                       color: Colors.white
                   ),),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => LastLaunchRoute()),
+                    );
+                  },
                   trailing: Icon(Icons.arrow_forward),
                 ),
                 ListTile(
