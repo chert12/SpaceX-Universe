@@ -20,23 +20,23 @@ class NetworkAdapter {
     }
   }
 
-  Future<LaunchesList> getAllLaunches() async {
+  Future<List<LaunchDataModel>> getAllLaunches() async {
     final response = await http.get(AppConstants.SERVER_ULR +
         AppConstants.API_VERSION +
         AppConstants.API_GET_ALL_LAUNCHES);
 
     if (response.statusCode == 200) {
       // If server returns an OK response, parse the JSON;
-      LaunchesList res = null;
       try {
         //Iterable l = json.decode(response.body);
-        res = LaunchesList.fromJson(json.decode(response.body));
-        //res = (json.decode(response.body) as List).map((e) => new LaunchDataModel.fromJson(e)).toList();
+        //res = LaunchesList.fromJson(json.decode(response.body));
+        var js = json.decode(response.body);
+        return (js as List).map((e) => new LaunchDataModel.fromJson(e)).toList();
         //res = (json.decode(response.body) as List<dynamic>).cast<LaunchDataModel>();
       } catch (e) {
         debugPrint(e);
       }
-      return res;
+      return new List<LaunchDataModel>();
     } else {
       // If that response was not OK, throw an error.
       throw Exception('Failed to load post');

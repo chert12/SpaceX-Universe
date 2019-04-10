@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:spacex_universe/dataModels/LaunchSiteDataModel.dart';
 import 'package:spacex_universe/dataModels/RocketDataModel.dart';
 
@@ -27,27 +28,38 @@ class LaunchDataModel {
   factory LaunchDataModel.fromJson(Map<String, dynamic> json) {
     LaunchDataModel result = new LaunchDataModel();
 
-    result.flightNumber = json['flight_number'];
-    result.missionName = json['mission_name'];
-    result.missionIds = (json['mission_id'] as List<dynamic>).cast<String>();
-    result.launchYear = json['launch_year'];
-    result.launchDateUnix =
-        new DateTime.fromMillisecondsSinceEpoch(json['launch_date_unix']);
-    result.launchDateLocal = DateTime.parse(json['launch_date_local']);
-    result.isTentative = json['is_tentative'];
-    result.tentativeMaxPrecision = json['tentative_max_precision'];
-    result.tbd = json['tbd'];
-    result.launchWindow = json['launch_window'];
-    result.rocket = RocketDataModel.fromJson(json['rocket']);
-    result.ships = (json['ships'] as List<dynamic>).cast<String>();
-    var tmpTelemetry = json['telemetry'];
-    result.telemetryLink = tmpTelemetry['flight_club'];
-    result.launchSite = LaunchSiteDataModel.fromJson(json['launch_site']);
-    result.launchSuccess = json['launch_success'];
-    result.links = LaunchLinksDataModel.fromJson(json['links']);
-    result.details = json['details'];
-    result.upcoming = json['upcoming'];
-    result.staticFireDate = new DateTime.fromMillisecondsSinceEpoch(json['static_fire_date_unix']);
+    try {
+      if (json.containsKey('flight_number')) {
+        result.flightNumber = json['flight_number'];
+      }
+      result.missionName = json['mission_name'];
+      result.missionIds = (json['mission_id'] as List<dynamic>).cast<String>();
+      result.launchYear = json['launch_year'];
+      result.launchDateUnix =
+      new DateTime.fromMillisecondsSinceEpoch(json['launch_date_unix']);
+      result.launchDateLocal = DateTime.parse(json['launch_date_local']);
+      result.isTentative = json['is_tentative'];
+      result.tentativeMaxPrecision = json['tentative_max_precision'];
+      result.tbd = json['tbd'];
+      result.launchWindow = json['launch_window'];
+      result.rocket = RocketDataModel.fromJson(json['rocket']);
+      result.ships = (json['ships'] as List<dynamic>).cast<String>();
+      var tmpTelemetry = json['telemetry'];
+      result.telemetryLink = tmpTelemetry['flight_club'];
+      result.launchSite = LaunchSiteDataModel.fromJson(json['launch_site']);
+      result.launchSuccess = json['launch_success'];
+      result.links = LaunchLinksDataModel.fromJson(json['links']);
+      result.details = json['details'];
+      result.upcoming = json['upcoming'];
+      if(json.containsKey('static_fire_date_unix') && json['static_fire_date_unix'] != null) {
+        result.staticFireDate =
+        new DateTime.fromMillisecondsSinceEpoch(json['static_fire_date_unix']);
+      }
+    }
+    catch(e)
+    {
+      debugPrint(e);
+    }
 
     return result;
   }
