@@ -53,6 +53,21 @@ class LaunchDataModel {
   }
 }
 
+class LaunchesList {
+  LaunchesList();
+
+  List<LaunchDataModel> launches;
+
+  factory LaunchesList.fromJson(Map<String, dynamic> json) {
+    LaunchesList result = new LaunchesList();
+
+    result.launches =
+        (json['payloads'] as List<dynamic>).cast<LaunchDataModel>();
+
+    return result;
+  }
+}
+
 class LaunchLinksDataModel
 {
   LaunchLinksDataModel();

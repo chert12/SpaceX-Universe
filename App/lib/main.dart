@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:spacex_universe/dataModels/LaunchDataModel.dart';
+import 'package:spacex_universe/routes/AllLaunchesRoute.dart';
 import 'package:spacex_universe/routes/LastLaunchRoute.dart';
 import 'package:spacex_universe/services/AppConstants.dart';
 import 'package:spacex_universe/services/NetworkAdapter.dart';
@@ -31,13 +32,9 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  Future<LaunchDataModel> launchModel;
-
   @override
   void initState() {
     super.initState();
-    NetworkAdapter a = new NetworkAdapter();
-    launchModel = a.getLastLaunch();
   }
 
   @override
@@ -66,6 +63,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   title: Text("Launches", style: TextStyle(
                       color: Colors.white
                   ),),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AllLaunchesRoute()),
+                    );
+                  },
                   trailing: Icon(Icons.arrow_forward),
                 ),
                 ListTile(
