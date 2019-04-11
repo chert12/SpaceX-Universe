@@ -85,7 +85,13 @@ class LaunchLinksDataModel
   {
     LaunchLinksDataModel result = new LaunchLinksDataModel();
 
-    result.missionPatch = json['mission_patch'];
+    if(json.containsKey('mission_patch') && json['mission_patch'] != null) {
+      result.missionPatch = json['mission_patch'];
+    }
+    else
+      {
+        result.missionPatch = "";
+      }
     result.missionPatchSmall = json['mission_patch_small'];
     result.redditCampaign = json['reddit_campaign'];
     result.redditLaunch = json['reddit_launch'];

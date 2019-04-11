@@ -62,7 +62,6 @@ class _LastLaunchRouteState extends State<LastLaunchRoute> {
                 value,
                 style: TextStyle(
                     color: Colors.black38,
-                    fontWeight: FontWeight.bold,
                     fontSize: 16),
               ),
             ],
