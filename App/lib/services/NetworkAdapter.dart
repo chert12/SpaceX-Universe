@@ -2,7 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:spacex_universe/dataModels/LaunchDataModel.dart';
+import 'package:spacex_universe/dataModels/launch/LaunchDataModel.dart';
+import 'package:spacex_universe/dataModels/rocket/RocketDataModel.dart';
 import 'package:spacex_universe/services/AppConstants.dart';
 
 class NetworkAdapter {
@@ -37,6 +38,25 @@ class NetworkAdapter {
         debugPrint(e);
       }
       return new List<LaunchDataModel>();
+    } else {
+      // If that response was not OK, throw an error.
+      throw Exception('Failed to load post');
+    }
+  }
+
+  Future<List<RocketDataModel>> getAllRockets() async {
+    final response = await http.get(AppConstants.SERVER_ULR +
+        AppConstants.API_VERSION +
+        AppConstants.API_GET_ALL_ROCKETS);
+
+    if (response.statusCode == 200) {
+      try {
+        var js = json.decode(response.body);
+        return (js as List).map((e) => new RocketDataModel.fromJson(e)).toList();
+      } catch (e) {
+        debugPrint(e);
+      }
+      return new List<RocketDataModel>();
     } else {
       // If that response was not OK, throw an error.
       throw Exception('Failed to load post');

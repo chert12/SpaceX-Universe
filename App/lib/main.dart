@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:spacex_universe/dataModels/LaunchDataModel.dart';
+import 'package:spacex_universe/dataModels/launch/LaunchDataModel.dart';
 import 'package:spacex_universe/routes/AllLaunchesRoute.dart';
 import 'package:spacex_universe/routes/LastLaunchRoute.dart';
 import 'package:spacex_universe/services/AppConstants.dart';
@@ -47,17 +47,21 @@ class _MyHomePageState extends State<MyHomePage> {
           child:new DrawerHeader(
             child: ListView(
               children: <Widget>[
-                ListTile(
-                  title: Text("Last launch", style: TextStyle(
-                      color: Colors.white
-                  ),),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => LastLaunchRoute()),
-                    );
-                  },
-                  trailing: Icon(Icons.arrow_forward),
+                Column(
+                  children: <Widget>[
+                    ListTile(
+                      title: Text("Last launch", style: TextStyle(
+                          color: Colors.white
+                      ),),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => LastLaunchRoute()),
+                        );
+                      },
+                      trailing: Icon(Icons.arrow_forward, color: Colors.white,),
+                    ),
+                  ],
                 ),
                 ListTile(
                   title: Text("Launches", style: TextStyle(

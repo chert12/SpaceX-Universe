@@ -17,5 +17,6 @@ class AppConstants
   //launches
   static const String API_GET_LAST_LAUNCH = "/launches/latest";
   static const String API_GET_ALL_LAUNCHES = "/launches";
+  static const String API_GET_ALL_ROCKETS = "/rockets";
 
 }
