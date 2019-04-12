@@ -2,6 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
+import 'package:spacex_universe/dataModels/companyInfo/CompanyInfoDataModel.dart';
+import 'package:spacex_universe/dataModels/history/HistoryDataModel.dart';
 import 'package:spacex_universe/dataModels/launch/LaunchDataModel.dart';
 import 'package:spacex_universe/dataModels/rocket/RocketDataModel.dart';
 import 'package:spacex_universe/services/AppConstants.dart';
@@ -21,6 +24,20 @@ class NetworkAdapter {
     }
   }
 
+  Future<CompanyInfoDataModel> getCompanyInfo() async {
+    final response = await http.get(AppConstants.SERVER_ULR +
+        AppConstants.API_VERSION +
+        AppConstants.API_GET_COMPANY_INFO);
+
+    if (response.statusCode == 200) {
+      // If server returns an OK response, parse the JSON
+      return CompanyInfoDataModel.fromJson(json.decode(response.body));
+    } else {
+      // If that response was not OK, throw an error.
+      throw Exception('Failed to load post');
+    }
+  }
+
   Future<List<LaunchDataModel>> getAllLaunches() async {
     final response = await http.get(AppConstants.SERVER_ULR +
         AppConstants.API_VERSION +
@@ -29,17 +46,13 @@ class NetworkAdapter {
     if (response.statusCode == 200) {
       // If server returns an OK response, parse the JSON;
       try {
-        //Iterable l = json.decode(response.body);
-        //res = LaunchesList.fromJson(json.decode(response.body));
         var js = json.decode(response.body);
         return (js as List).map((e) => new LaunchDataModel.fromJson(e)).toList();
-        //res = (json.decode(response.body) as List<dynamic>).cast<LaunchDataModel>();
       } catch (e) {
         debugPrint(e);
       }
       return new List<LaunchDataModel>();
     } else {
-      // If that response was not OK, throw an error.
       throw Exception('Failed to load post');
     }
   }
@@ -58,8 +71,26 @@ class NetworkAdapter {
       }
       return new List<RocketDataModel>();
     } else {
-      // If that response was not OK, throw an error.
       throw Exception('Failed to load post');
     }
   }
+
+  Future<List<HistoryDataModel>> getAllHistoryEvents() async {
+    final response = await http.get(AppConstants.SERVER_ULR +
+        AppConstants.API_VERSION +
+        AppConstants.API_GET_HISTORY);
+
+    if (response.statusCode == 200) {
+      try {
+        var js = json.decode(response.body);
+        return (js as List).map((e) => new HistoryDataModel.fromJson(e)).toList();
+      } catch (e) {
+        debugPrint(e);
+      }
+      return new List<HistoryDataModel>();
+    } else {
+      throw Exception('Failed to load post');
+    }
+  }
+
 }
