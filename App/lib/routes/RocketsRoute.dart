@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:spacex_universe/dataModels/rocket/RocketDataModel.dart';
 import 'package:spacex_universe/services/AppConstants.dart';
 import 'package:spacex_universe/services/NetworkAdapter.dart';
-import 'package:spacex_universe/widgets/RocketViewWidget.dart';
+import 'package:spacex_universe/widgets/RocketCard.dart';
 
 class RocketsRoute extends StatefulWidget {
   RocketsRoute({Key key}) : super(key: key);

@@ -1,6 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:spacex_universe/dataModels/rocket/RocketDataModel.dart';
+import 'package:spacex_universe/routes/SingleRocketRoute.dart';
+import 'package:spacex_universe/services/Utilities.dart';
 
 class RocketCard extends StatelessWidget {
   const RocketCard({Key key, this.model})
@@ -37,7 +40,46 @@ class RocketCard extends StatelessWidget {
   }
 
   Widget _buildCardText(BuildContext context) {
-    return Text("fsf");
+    var w = List<Widget>();
+
+    w.add(Padding(
+      padding: EdgeInsets.only(bottom: 5),
+        child: Text(
+      model.rocketName,
+      style: TextStyle(
+          color: Colors.black87,
+          fontFamily: "Roboto",
+          fontWeight: FontWeight.bold,
+          fontSize: 18),
+    )));
+    w.add(_buildCardTextRow("First flight:", DateFormat('dd MMM yyyy').format(model.firstFlight)));
+    w.add(_buildCardTextRow("Active:", Utilities.boolToString(model.active)));
+    w.add(_buildCardTextRow("Launch cost:", "${model.launchCost}\$"));
+    w.add(_buildCardTextRow("Stages:", model.stages.toString()));
+    w.add(_buildCardTextRow("Boosters:", model.boosters.toString()));
+    w.add(RaisedButton(
+      color: Colors.blue,
+      textColor: Colors.white,
+      onPressed: () =>
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    SingleRocketRoute(
+                      rocketModel: model,
+                    )),
+          ),
+      child: Text("View full info"),
+    ));
+
+    return Padding(
+      padding: EdgeInsets.all(10),
+      child: Center(
+        child: Column(
+          children: w,
+        ),
+      ),
+    );
   }
 
   Widget _buildCardTextRow(String title, String value) {
