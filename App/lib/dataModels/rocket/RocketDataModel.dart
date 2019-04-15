@@ -5,8 +5,8 @@ class RocketDataModel {
   bool active;
   int stages;
   int boosters;
-  double launchCost;
-  double successRate;
+  int launchCost;
+  int successRate;
   DateTime firstFlight;
   String country;
   String company;
@@ -33,7 +33,6 @@ class RocketDataModel {
     result.boosters = json['boosters'];
     result.launchCost = json['cost_per_launch'];
     result.successRate = json['success_rate_pct'];
-    result.successRate = json['first_flight'];
     if(json.containsKey('first_flight') && json['first_flight'] != null) {
       result.firstFlight =DateTime.parse(json['first_flight']);
     }
@@ -67,8 +66,12 @@ class RocketHeightDataModel
   factory RocketHeightDataModel.fromJson(Map<String, dynamic> json) {
     RocketHeightDataModel result = new RocketHeightDataModel();
 
-    result.meters = json['meters'];
-    result.feet = json['feet'];
+    num meters = json['meters'] ?? 0;
+    num feet = json['feet'] ?? 0;
+    //result.meters = json['meters'];
+    //result.feet = json['feet'];
+    result.meters = meters.toDouble();
+    result.feet = feet.toDouble();
 
     return result;
   }
@@ -89,8 +92,12 @@ class RocketDiameterDataModel
   factory RocketDiameterDataModel.fromJson(Map<String, dynamic> json) {
     RocketDiameterDataModel result = new RocketDiameterDataModel();
 
-    result.meters = json['meters'];
-    result.feet = json['feet'];
+    num meters = json['meters'] ?? 0;
+    num feet = json['feet'] ?? 0;
+    //result.meters = json['meters'];
+    //result.feet = json['feet'];
+    result.meters = meters.toDouble();
+    result.feet = feet.toDouble();
 
     return result;
   }
@@ -111,8 +118,12 @@ class RocketMassDataModel
   factory RocketMassDataModel.fromJson(Map<String, dynamic> json) {
     RocketMassDataModel result = new RocketMassDataModel();
 
-    result.kg = json['kg'];
-    result.lb = json['lb'];
+    num kg = json['kg'] ?? 0;
+    num lb = json['lb'] ?? 0;
+//    result.kg = json['kg'];
+//    result.lb = json['lb'];
+    result.kg = kg.toDouble();
+    result.lb = lb.toDouble();
 
     return result;
   }
@@ -137,8 +148,12 @@ class RocketPayloadDataModel
 
     result.id = json['id'];
     result.name = json['name'];
-    result.kg = json['kg'];
-    result.lb = json['lb'];
+    num kg = json['kg'] ?? 0;
+    num lb = json['lb'] ?? 0;
+//    result.kg = json['kg'];
+//    result.lb = json['lb'];
+    result.kg = kg.toDouble();
+    result.lb = lb.toDouble();
 
     return result;
   }
@@ -156,18 +171,23 @@ class RocketStageDataModel
   int engines;
   double fuelAmount; // tons
   double burnTime; //sec
-  List<RocketStagePayloadDataModel> payloads;
+  RocketStagePayloadDataModel payloads;
 
   factory RocketStageDataModel.fromJson(Map<String, dynamic> json) {
     RocketStageDataModel result = new RocketStageDataModel();
 
     result.reusable = json['reusable'];
     result.engines = json['engines'];
-    result.fuelAmount = json['fuel_amount_tons'];
-    result.burnTime = json['burn_time_sec'];
+
+    num fuelAmount = json['fuel_amount_tons'] ?? 0;
+    num burnTime = json['burn_time_sec'] ?? 0;
+//    result.fuelAmount = json['fuel_amount_tons'];
+//    result.burnTime = json['burn_time_sec'];
+    result.fuelAmount = fuelAmount.toDouble();
+    result.burnTime = burnTime.toDouble();
+
     if(json.containsKey('payloads')) {
-      result.payloads = (json['payloads'] as List<dynamic>).cast<
-          RocketStagePayloadDataModel>();
+      result.payloads = RocketStagePayloadDataModel.fromJson(json['payloads']);
     }
 
     return result;

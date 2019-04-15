@@ -5,12 +5,11 @@ import 'package:spacex_universe/dataModels/launch/LaunchDataModel.dart';
 import 'package:spacex_universe/routes/SingleLaunchRoute.dart';
 import 'package:spacex_universe/services/Utilities.dart';
 
-class LaunchHeroAnimation extends StatelessWidget {
-  const LaunchHeroAnimation({Key key, this.model, this.onTap})
+class LaunchCard extends StatelessWidget {
+  const LaunchCard({Key key, this.model})
       : super(key: key);
 
   final LaunchDataModel model;
-  final VoidCallback onTap;
 
   Widget build(BuildContext context) {
     return _buildCard(model, context);
@@ -64,8 +63,7 @@ class LaunchHeroAnimation extends StatelessWidget {
   }
 
   Widget _buildCard(LaunchDataModel model, BuildContext context) {
-    return Container(
-        height: 200,
+    return Padding(
         padding: new EdgeInsets.all(10),
         child: Card(
           child: Row(
@@ -86,26 +84,6 @@ class LaunchHeroAnimation extends StatelessWidget {
             ],
           ),
         ));
-    /* return new Container(
-            height: 200,
-            padding: new EdgeInsets.all(10),
-            child: Card(
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 3,
-                    child: CachedNetworkImage(
-                      imageUrl: model.links.missionPatch,
-                      placeholder: (context, url) =>
-                      new CircularProgressIndicator(),
-                      errorWidget: (context, url, error) =>
-                      new Icon(Icons.error),
-                    ),
-                  ),
-                  Expanded(flex: 6, child: _buildCardText(model, context))
-                ],
-              ),
-            ));*/
   }
 
   Widget _buildCardTextRow(String title, String value) {

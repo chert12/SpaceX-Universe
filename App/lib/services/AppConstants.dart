@@ -4,6 +4,10 @@ class AppConstants
   static const String APPBAR_TITLE_MAIN = "SpaceX Universe";
   static const String APPBAR_TITLE_LAST_LAUNCH = "Last launch";
   static const String APPBAR_TITLE_LAUNCHES = "SpaceX launches";
+  static const String APPBAR_TITLE_ROCKETS = "SpaceX rockets";
+
+  //image names
+  static const String ROCKET_IMAGE_PATH = "assets/rocket.png";
 
   //capsules
   static const String API_GET_ALL_CAPSULES = "https://api.spacexdata.com/v3/capsules";
@@ -20,5 +24,10 @@ class AppConstants
   static const String API_GET_ALL_ROCKETS = "/rockets";
   static const String API_GET_HISTORY = "/history";
   static const String API_GET_COMPANY_INFO = "/info";
+
+  //texts
+  static const String READ_MORE_SPACEX = "Read more\n on SpaceX";
+  static const String READ_MORE_REDDIT = "Read more\n on Reddit";
+  static const String READ_MORE_WIKIPEDIA = "Read more\n on Wikipedia";
 
 }

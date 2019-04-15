@@ -5,7 +5,7 @@ import 'package:spacex_universe/dataModels/launch/LaunchDataModel.dart';
 import 'package:spacex_universe/services/AppConstants.dart';
 import 'package:spacex_universe/services/NetworkAdapter.dart';
 import 'package:spacex_universe/services/Utilities.dart';
-import 'package:spacex_universe/widgets/LaunchHeroAnimation.dart';
+import 'package:spacex_universe/widgets/LaunchCard.dart';
 
 class AllLaunchesRoute extends StatefulWidget {
   AllLaunchesRoute({Key key}) : super(key: key);
@@ -17,19 +17,31 @@ class AllLaunchesRoute extends StatefulWidget {
 class _AllLaunchesRouteState extends State<AllLaunchesRoute> {
 //  Future<LaunchDataModel> launchModel;
   NetworkAdapter networkAdapter;
+  List<LaunchDataModel> _models;
 
 //
   @override
   void initState() {
     super.initState();
     networkAdapter = new NetworkAdapter();
+
+    var d = networkAdapter.getAllLaunches();
+    var tmp = (List<LaunchDataModel> launches) {
+      setState(() {
+        _models = launches;
+      });
+    };
+
+    d.then(tmp);
   }
 
   Widget _buildCompleteUi(List<LaunchDataModel> model) {
     List<Widget> tmp = new List<Widget>();
     for (int i = model.length - 1; i > 0; i--) {
       //tmp.add(_buildCard(model[i]));
-      tmp.add(LaunchHeroAnimation(model: model[i], onTap: ()=>{},));
+      tmp.add(LaunchCard(
+        model: model[i],
+      ));
     }
     return ListView(
       children: tmp,
@@ -67,7 +79,10 @@ class _AllLaunchesRouteState extends State<AllLaunchesRoute> {
         Text(
           model.missionName,
           style: TextStyle(
-              color: Colors.black, fontFamily: "Roboto", fontWeight: FontWeight.bold, fontSize: 18),
+              color: Colors.black,
+              fontFamily: "Roboto",
+              fontWeight: FontWeight.bold,
+              fontSize: 18),
         ),
       ],
     );
@@ -116,13 +131,52 @@ class _AllLaunchesRouteState extends State<AllLaunchesRoute> {
         ));
   }
 
+  Widget _buildPage(List<LaunchDataModel> models) {
+    var modelsUpcoming = List<LaunchDataModel>();
+    var modelsPast = List<LaunchDataModel>();
+    for (int i = 0; i < models.length; i++) {
+      var md = models[i];
+      if (md.launchDateLocal.millisecondsSinceEpoch >
+              DateTime.now().millisecondsSinceEpoch ||
+          md.launchSuccess == null) {
+        modelsUpcoming.add(md);
+      } else {
+        modelsPast.add(md);
+      }
+    }
+
+    return DefaultTabController(
+        length: 3,
+        child: Scaffold(
+            appBar: AppBar(
+              title: Text(AppConstants.APPBAR_TITLE_LAUNCHES),
+              bottom: TabBar(
+                tabs: [
+                  Tab(
+                    text: "Upcoming",
+                  ),
+                  Tab(
+                    text: "Past",
+                  ),
+                ],
+              ),
+            ),
+            body: TabBarView(
+              children: [
+                _buildCompleteUi(modelsUpcoming),
+                _buildCompleteUi(modelsPast)
+              ],
+            )));
+  }
+
   Widget _buildFutureBuilder(Future<List<LaunchDataModel>> modelFuture) {
     return new FutureBuilder<List<LaunchDataModel>>(
       future: modelFuture,
       builder: (BuildContext context,
           AsyncSnapshot<List<LaunchDataModel>> snapshot) {
         if (snapshot.hasData) {
-          return _buildCompleteUi(snapshot.data);
+          _models = snapshot.data;
+          //return _buildRefreshView();
         } else {
           return new Center(
             child: CircularProgressIndicator(),
@@ -134,10 +188,15 @@ class _AllLaunchesRouteState extends State<AllLaunchesRoute> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(AppConstants.APPBAR_TITLE_LAUNCHES),
-        ),
-        body: _buildFutureBuilder(networkAdapter.getAllLaunches()));
+    if (_models == null) {
+      return Scaffold(
+          appBar: AppBar(
+            title: Text(AppConstants.APPBAR_TITLE_LAUNCHES),
+          ),
+          //body: _buildFutureBuilder(networkAdapter.getAllLaunches()));
+          body: Center(child: CircularProgressIndicator()));
+    } else {
+      return _buildPage(_models);
+    }
   }
 }
