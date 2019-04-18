@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:spacex_universe/dataModels/launch/LaunchDataModel.dart';
+import 'package:spacex_universe/dataModels/launch/RocketDataModel.dart';
 import 'package:spacex_universe/services/AppConstants.dart';
 import 'package:spacex_universe/services/Utilities.dart';
 
@@ -17,6 +18,7 @@ class LaunchViewWidget extends StatelessWidget {
   Widget _buildCompleteUi(BuildContext context) {
     var w = List<Widget>();
     w.add(_buildImage(context));
+    w.add(_buildListTitle(model.missionName));
     w.add(_buildListElement(
         "Flight number", "#${model.flightNumber.toString()}"));
     w.add(_buildListElement("Mission name", model.missionName));
@@ -25,6 +27,50 @@ class LaunchViewWidget extends StatelessWidget {
         DateFormat('dd MMMM yyyy - kk:mm').format(model.launchDateLocal)));
     w.add(_buildListElement(
         "Success", Utilities.boolToString(model.launchSuccess)));
+
+    if (model.rocket != null) {
+      var rocket = model.rocket;
+      w.add(_buildListTitle("Rocket"));
+      w.add(_buildListElement("Name:", rocket.rocketName));
+      w.add(_buildListElement("Type:", rocket.rocketType));
+      w.add(_buildListElement("ID:", rocket.rocketId));
+      if (null != rocket.firstStage) {
+        var fs = rocket.firstStage;
+        if (fs.cores != null) {
+          for (int i = 0; i < fs.cores.length; i++) {
+            var core = fs.cores[i];
+            w.add(_buildListTitle("Core #$i"));
+            w.add(_buildListElement("Serial:", core.coreSerial));
+            w.add(_buildListElement(
+                "Reused:", Utilities.boolToString(core.reused)));
+            w.add(_buildListElement("Flight:", "#${core.flight.toString()}"));
+            w.add(_buildListElement(
+                "Land success:", Utilities.boolToString(core.landSuccess)));
+            w.add(_buildListElement("Land type:", core.landingType));
+            w.add(_buildListElement("Land vehicle:", core.landingVehicle));
+          }
+        }
+      }
+      if (null != rocket.secondStage) {
+        var ss = rocket.secondStage;
+        if (null != ss.payloads && ss.payloads.length > 0) {
+          w.add(_buildListTitle("Second stage"));
+          for (int i = 0; i < ss.payloads.length; i++) {
+            var p = ss.payloads[i];
+            w.add(_buildListTitle("Payload #${i + 1}"));
+            w.add(_buildListElement("ID", p.payloadId));
+            for (int j = 0; j < p.customers.length; j++) {
+              w.add(_buildListElement(
+                  "Customer #${i + 1}", p.customers[i].toString()));
+            }
+            w.add(_buildListElement("Payload type:", p.payloadType));
+            w.add(_buildListElement("Nationality:", p.nationality));
+            w.add(_buildListElement("Manufacturer:", p.manufacturer));
+            w.add(_buildListElement("Orbit:", p.orbit));
+          }
+        }
+      }
+    }
 
     return ListView(children: w);
   }
@@ -56,7 +102,7 @@ class LaunchViewWidget extends StatelessWidget {
 
   Widget _buildListElement(String title, String value) {
     return new Padding(
-      padding: new EdgeInsets.all(10),
+      padding: new EdgeInsets.all(7),
       child: Column(
         children: <Widget>[
           Row(
@@ -76,7 +122,27 @@ class LaunchViewWidget extends StatelessWidget {
             ],
           ),
           new Padding(
-              padding: new EdgeInsets.only(top: 7),
+              padding: new EdgeInsets.only(top: 5),
+              child: Container(height: 1.0, color: Colors.black12))
+        ],
+      ),
+    );
+  }
+
+  Widget _buildListTitle(String title) {
+    return new Padding(
+      padding: new EdgeInsets.all(7),
+      child: Column(
+        children: <Widget>[
+          Text(
+            title,
+            style: TextStyle(
+                color: Colors.black87,
+                fontWeight: FontWeight.bold,
+                fontSize: 18),
+          ),
+          new Padding(
+              padding: new EdgeInsets.only(top: 5),
               child: Container(height: 2.0, color: Colors.black12))
         ],
       ),
@@ -88,7 +154,7 @@ class LaunchViewWidget extends StatelessWidget {
       text = "";
     }
     return new Padding(
-      padding: new EdgeInsets.all(10),
+      padding: new EdgeInsets.all(7),
       child: Column(
         children: <Widget>[
           Column(
@@ -111,7 +177,7 @@ class LaunchViewWidget extends StatelessWidget {
             ],
           ),
           new Padding(
-              padding: new EdgeInsets.only(top: 7),
+              padding: new EdgeInsets.only(top: 5),
               child: Container(height: 2.0, color: Colors.black12))
         ],
       ),

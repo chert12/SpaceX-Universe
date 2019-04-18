@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:spacex_universe/dataModels/launch/LaunchDataModel.dart';
 import 'package:spacex_universe/routes/SingleLaunchRoute.dart';
+import 'package:spacex_universe/services/AppConstants.dart';
 import 'package:spacex_universe/services/Utilities.dart';
 
 class LaunchCard extends StatelessWidget {
@@ -70,15 +71,7 @@ class LaunchCard extends StatelessWidget {
             children: <Widget>[
               Expanded(
                 flex: 3,
-                child: new Hero(
-                    tag: model.flightNumber,
-                    child: CachedNetworkImage(
-                      imageUrl: model.links.missionPatch,
-                      placeholder: (context, url) =>
-                      new CircularProgressIndicator(),
-                      errorWidget: (context, url, error) =>
-                      new Icon(Icons.error),
-                    )),
+                child: _buildImage(context)
               ),
               Expanded(flex: 6, child: _buildCardText(model, context))
             ],
@@ -86,6 +79,29 @@ class LaunchCard extends StatelessWidget {
         ));
   }
 
+  Widget _buildImage(BuildContext context) {
+    if (null == model.links || null == model.links.missionPatch || model.links.missionPatch.isEmpty) {
+      return Hero(
+          tag: model.flightNumber,
+          child: SizedBox(
+              height: MediaQuery.of(context).size.height * 0.3,
+              width: MediaQuery.of(context).size.width,
+              child: DecoratedBox(
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(AppConstants.ROCKET_IMAGE_PATH),
+                      )))));
+    } else {
+      return Hero(
+          tag: model.flightNumber,
+          child: CachedNetworkImage(
+            imageUrl: model.links.missionPatch,
+            placeholder: (context, url) => new CircularProgressIndicator(),
+            errorWidget: (context, url, error) => new Icon(Icons.error),
+          ));
+    }
+  }
+  
   Widget _buildCardTextRow(String title, String value) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

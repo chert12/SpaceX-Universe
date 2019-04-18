@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:spacex_universe/dataModels/rocket/RocketDataModel.dart';
+import 'package:spacex_universe/widgets/RocketViewWidget.dart';
 
 class SingleRocketRoute extends StatefulWidget {
   SingleRocketRoute({Key key,  this.rocketModel}) : super(key: key);
@@ -23,6 +24,6 @@ class _SingleRocketRouteState extends State<SingleRocketRoute> {
           title: Text(rocketModel.rocketName),
         ),
         //body: LaunchViewWidget(model: launchModel,));
-        body: RefreshProgressIndicator());
+        body: RocketViewWidget(model: rocketModel));
   }
 }

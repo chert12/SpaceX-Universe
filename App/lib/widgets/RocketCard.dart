@@ -24,7 +24,7 @@ class RocketCard extends StatelessWidget {
               Expanded(
                 flex: 3,
                 child: new Hero(
-                    tag: model.id,
+                    tag: model.rocketId,
                     child: CachedNetworkImage(
                       imageUrl: model.images[0],
                       placeholder: (context, url) =>

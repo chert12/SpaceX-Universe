@@ -7,6 +7,7 @@ class RocketDataModel {
   String rocketName;
   String rocketType;
   FirstStageDataModel firstStage;
+  SecondStageDataModel secondStage;
 
   factory RocketDataModel.fromJson(Map<String, dynamic> json) {
     RocketDataModel result = new RocketDataModel();
@@ -15,6 +16,7 @@ class RocketDataModel {
     result.rocketName = json['rocket_name'];
     result.rocketType = json['rocket_type'];
     result.firstStage = FirstStageDataModel.fromJson(json['first_stage']);
+    result.secondStage = SecondStageDataModel.fromJson(json['second_stage']);
 
     return result;
   }
@@ -28,7 +30,8 @@ class FirstStageDataModel
   factory FirstStageDataModel.fromJson(Map<String, dynamic> json) {
     FirstStageDataModel result = new FirstStageDataModel();
 
-    result.cores = (json['cores'] as List<dynamic>).cast<RocketCoreDataModel>();
+    //result.cores = (json['cores'] as List<dynamic>).cast<RocketCoreDataModel>();
+    result.cores = (json['cores'] as List).map((e) => new RocketCoreDataModel.fromJson(e)).toList();
 
     return result;
   }
@@ -45,7 +48,7 @@ class SecondStageDataModel
     SecondStageDataModel result = new SecondStageDataModel();
 
     result.block = json['block'];
-    result.payloads = (json['payloads'] as List<dynamic>).cast<RocketPayloadDataModel>();
+    result.payloads = (json['payloads'] as List).map((e) => new RocketPayloadDataModel.fromJson(e)).toList();
     result.fairings = json['fairings'];
 
     return result;
@@ -71,16 +74,16 @@ class RocketCoreDataModel
   factory RocketCoreDataModel.fromJson(Map<String, dynamic> json) {
     RocketCoreDataModel result = new RocketCoreDataModel();
 
-    result.coreSerial = json['rocket_id'];
-    result.flight = json['rocket_name'];
-    result.block = json['rocket_type'];
-    result.gridfins = json['rocket_type'];
-    result.legs = json['rocket_type'];
-    result.reused = json['rocket_type'];
-    result.landSuccess = json['rocket_type'];
-    result.landingIntent = json['rocket_type'];
-    result.landingType = json['rocket_type'];
-    result.landingVehicle = json['rocket_type'];
+    result.coreSerial = json['core_serial'];
+    result.flight = json['flight'];
+    result.block = json['block'];
+    result.gridfins = json['gridfins'];
+    result.legs = json['legs'];
+    result.reused = json['reused'];
+    result.landSuccess = json['land_success'];
+    result.landingIntent = json['landing_intent'];
+    result.landingType = json['landing_type'];
+    result.landingVehicle = json['landing_vehicle'];
 
     return result;
   }
@@ -111,19 +114,30 @@ class RocketPayloadDataModel
     RocketPayloadDataModel result = new RocketPayloadDataModel();
 
     result.payloadId = json['payload_id'];
-    result.noradIds = (json['norad_id'] as List<dynamic>).cast<int>();
+
+    var tmpListNorad = json['norad_id'];
+    result.noradIds = new List<int>.from(tmpListNorad);
+
+    var tmpListCustomer = json['customers'];
+    result.customers = new List<String>.from(tmpListCustomer);
+
     result.capSerial = json['cap_serial'];
     result.reused = json['reused'];
-    result.customers = (json['norad_id'] as List<dynamic>).cast<String>();
     result.nationality = json['nationality'];
     result.manufacturer = json['manufacturer'];
     result.payloadType = json['payload_type'];
-    result.payloadMassKg = json['payload_mass_kg'];
-    result.payloadMassLbs = json['payload_mass_lbs'];
+
+    num payloadMassKg = json['payload_mass_kg'] ?? 0;
+    num payloadMassLbs = json['payload_mass_lbs'] ?? 0;
+    num massReturnedKg = json['mass_returned_kg'] ?? 0;
+    num massReturnedLbs = json['mass_returned_lbs'] ?? 0;
+    result.payloadMassKg = payloadMassKg.toDouble();
+    result.payloadMassLbs = payloadMassLbs.toDouble();
+    result.massReturnedKg = massReturnedKg.toDouble();
+    result.massReturnedLbs = massReturnedLbs.toDouble();
+
     result.orbit = json['orbit'];
     result.orbitParams = OrbitParamsDataModel.fromJson(json['orbit_params']);
-    result.massReturnedKg = json['mass_returned_kg'];
-    result.massReturnedLbs = json['mass_returned_lbs'];
     result.flightTimeSec = json['flight_time_sec'];
     result.cargoManifest = json['cargo_manifest'];
 

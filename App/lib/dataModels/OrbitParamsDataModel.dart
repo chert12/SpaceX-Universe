@@ -1,5 +1,4 @@
-class OrbitParamsDataModel
-{
+class OrbitParamsDataModel {
   OrbitParamsDataModel();
 
   String referenceSystem;
@@ -23,21 +22,36 @@ class OrbitParamsDataModel
 
     result.referenceSystem = json['reference_system'];
     result.regime = json['regime'];
-    result.longitude = json['longitude'];
-    result.semiMajorAxisKm = json['semi_major_axis_km'];
-    result.eccentricity = json['eccentricity'];
-    result.periapsisKm = json['periapsis_km'];
-    result.apoapsisKm = json['apoapsis_km'];
-    result.inclinationDeg = json['inclination_deg'];
-    result.periodMin = json['period_min'];
-    result.lifespanYears = json['lifespan_years'];
-    result.epoch = json['epoch'];
-    result.meanMotion = json['mean_motion'];
-    result.raan = json['raan'];
-    result.argOfPericenter = json['arg_of_pericenter'];
-    result.meanAnomaly = json['mean_anomaly'];
+    if (json.containsKey('epoch') && json['epoch'] != null) {
+      result.epoch = DateTime.parse(json['epoch']);
+    }
+
+    num longitude = json['longitude'] ?? 0;
+    num semiMajorAxisKm = json['semi_major_axis_km'] ?? 0;
+    num eccentricity = json['eccentricity'] ?? 0;
+    num periapsisKm = json['periapsis_km'] ?? 0;
+    num apoapsisKm = json['apoapsis_km'] ?? 0;
+    num inclinationDeg = json['inclination_deg'] ?? 0;
+    num periodMin = json['period_min'] ?? 0;
+    num lifespanYears = json['lifespan_years'] ?? 0;
+    num meanMotion = json['mean_motion'] ?? 0;
+    num raan = json['raan'] ?? 0;
+    num argOfPericenter = json['arg_of_pericenter'] ?? 0;
+    num meanAnomaly = json['mean_anomaly'] ?? 0;
+
+    result.longitude = longitude.toDouble();
+    result.semiMajorAxisKm = semiMajorAxisKm.toDouble();
+    result.eccentricity = eccentricity.toDouble();
+    result.periapsisKm = periapsisKm.toDouble();
+    result.apoapsisKm = apoapsisKm.toDouble();
+    result.inclinationDeg = inclinationDeg.toDouble();
+    result.periodMin = periodMin.toDouble();
+    result.lifespanYears = lifespanYears.toDouble();
+    result.meanMotion = meanMotion.toDouble();
+    result.raan = raan.toDouble();
+    result.argOfPericenter = argOfPericenter.toDouble();
+    result.meanAnomaly = meanAnomaly.toDouble();
 
     return result;
   }
-
 }
