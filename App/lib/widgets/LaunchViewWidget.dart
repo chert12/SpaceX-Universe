@@ -5,6 +5,9 @@ import 'package:spacex_universe/dataModels/launch/LaunchDataModel.dart';
 import 'package:spacex_universe/dataModels/launch/RocketDataModel.dart';
 import 'package:spacex_universe/services/AppConstants.dart';
 import 'package:spacex_universe/services/Utilities.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
 
 class LaunchViewWidget extends StatelessWidget {
   const LaunchViewWidget({Key key, this.model}) : super(key: key);
@@ -20,13 +23,13 @@ class LaunchViewWidget extends StatelessWidget {
     w.add(_buildImage(context));
     w.add(_buildListTitle(model.missionName));
     w.add(_buildListElement(
-        "Flight number", "#${model.flightNumber.toString()}"));
-    w.add(_buildListElement("Mission name", model.missionName));
-    w.add(_buildElementWithDescription("Description", model.details));
-    w.add(_buildListElement("Launch date",
-        DateFormat('dd MMMM yyyy - kk:mm').format(model.launchDateLocal)));
+        "Flight number:", "#${model.flightNumber.toString()}"));
+    w.add(_buildListElement("Mission name:", model.missionName));
+    w.add(_buildElementWithDescription("Description:", model.details));
+    w.add(_buildListElement("Launch date:",
+        DateFormat('dd MMMM yyyy').format(model.launchDateUnix)));
     w.add(_buildListElement(
-        "Success", Utilities.boolToString(model.launchSuccess)));
+        "Success:", Utilities.boolToString(model.launchSuccess)));
 
     if (model.rocket != null) {
       var rocket = model.rocket;
@@ -67,8 +70,40 @@ class LaunchViewWidget extends StatelessWidget {
             w.add(_buildListElement("Nationality:", p.nationality));
             w.add(_buildListElement("Manufacturer:", p.manufacturer));
             w.add(_buildListElement("Orbit:", p.orbit));
+            w.add(_buildListElement("Payload mass:",
+                "${p.payloadMassLbs} lb/ ${p.payloadMassKg} kg"));
           }
         }
+      }
+    }
+    w.add(_buildListTitle("Other info"));
+    w.add(_buildListElement("Launch site:", model.launchSite.siteName));
+    w.add(_buildLinkElement("Telemetry:", model.telemetryLink, context));
+    if (null != model.links) {
+      var links = model.links;
+      w.add(_buildLinkElement("Article:", links.article, context));
+      w.add(_buildLinkElement("Wikipedia:", links.wikipedia, context));
+      w.add(_buildLinkElement("Presskit:", links.pressKit, context));
+      w.add(_buildLinkElement("Youtube:", links.video, context));
+      w.add(_buildLinkElement("Reddit:", links.redditCampaign, context));
+      if (null != links.flickrImages) {
+        w.add(Container(
+            child: PhotoViewGallery.builder(
+              scrollPhysics: const BouncingScrollPhysics(),
+              builder: (BuildContext context, int index) {
+                return PhotoViewGalleryPageOptions(
+                  imageProvider: AssetImage(links.flickrImages[index]),
+                  initialScale: PhotoViewComputedScale.contained * 0.8,
+                  heroTag: links.flickrImages[index],
+                );
+              },
+              itemCount: links.flickrImages.length,
+              //loadingChild: widget.loadingChild,
+              //backgroundDecoration: widget.backgroundDecoration,
+              //pageController: widget.pageController,
+              //onPageChanged: onPageChanged,
+            )
+        ));
       }
     }
 
@@ -80,13 +115,19 @@ class LaunchViewWidget extends StatelessWidget {
       return Hero(
           tag: model.flightNumber,
           child: SizedBox(
-              height: MediaQuery.of(context).size.height * 0.3,
-              width: MediaQuery.of(context).size.width,
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height * 0.3,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
               child: DecoratedBox(
                   decoration: BoxDecoration(
                       image: DecorationImage(
-                image: AssetImage(AppConstants.ROCKET_IMAGE_PATH),
-              )))));
+                        image: AssetImage(AppConstants.ROCKET_IMAGE_PATH),
+                      )))));
     } else {
       return Hero(
           tag: model.flightNumber,
@@ -94,8 +135,14 @@ class LaunchViewWidget extends StatelessWidget {
             imageUrl: model.links.missionPatch,
             placeholder: (context, url) => new CircularProgressIndicator(),
             errorWidget: (context, url, error) => new Icon(Icons.error),
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height * 0.3,
+            width: MediaQuery
+                .of(context)
+                .size
+                .width,
+            height: MediaQuery
+                .of(context)
+                .size
+                .height * 0.3,
           ));
     }
   }
@@ -144,6 +191,42 @@ class LaunchViewWidget extends StatelessWidget {
           new Padding(
               padding: new EdgeInsets.only(top: 5),
               child: Container(height: 2.0, color: Colors.black12))
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLinkElement(String title, String link, BuildContext context) {
+    if (title.isEmpty || link.isEmpty) {
+      return null;
+    }
+    return new Padding(
+      padding: new EdgeInsets.all(7),
+      child: Column(
+        children: <Widget>[
+          InkWell(
+              onTap: () {
+                Utilities.launchUrl(link);
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    title,
+                    style: TextStyle(
+                        color: Colors.black87,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16),
+                  ),
+                  Icon(
+                    Icons.arrow_right,
+                    color: Colors.black87,
+                  ),
+                ],
+              )),
+          new Padding(
+              padding: new EdgeInsets.only(top: 5),
+              child: Container(height: 1.0, color: Colors.black12))
         ],
       ),
     );
