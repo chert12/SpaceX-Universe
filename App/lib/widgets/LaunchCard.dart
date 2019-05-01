@@ -5,13 +5,15 @@ import 'package:spacex_universe/dataModels/launch/LaunchDataModel.dart';
 import 'package:spacex_universe/routes/SingleLaunchRoute.dart';
 import 'package:spacex_universe/services/AppConstants.dart';
 import 'package:spacex_universe/services/Utilities.dart';
+import 'package:spacex_universe/widgets/CommonCardView.dart';
 
-class LaunchCard extends StatelessWidget {
+class LaunchCard extends CommonCardView {
   const LaunchCard({Key key, this.model})
       : super(key: key);
 
   final LaunchDataModel model;
 
+  @override
   Widget build(BuildContext context) {
     return _buildCard(model, context);
   }
@@ -31,16 +33,16 @@ class LaunchCard extends StatelessWidget {
         ),
       ],
     );
-    res.children.add(_buildCardTextRow("Flight", "#${model.flightNumber}"));
-    res.children.add(_buildCardTextRow("Launch date:",
+    res.children.add(buildCardTextRow("Flight", "#${model.flightNumber}"));
+    res.children.add(buildCardTextRow("Launch date:",
         DateFormat('dd MMM yyyy \n kk:mm').format(model.launchDateLocal)));
     if (model.launchDateLocal.millisecondsSinceEpoch >
         DateTime
             .now()
-            .millisecondsSinceEpoch) {
-      res.children.add(_buildCardTextRow("Successful:", "Upcoming"));
+            .millisecondsSinceEpoch || model.launchSuccess == null) {
+      res.children.add(buildCardTextRow("Successful:", "Upcoming"));
     } else {
-      res.children.add(_buildCardTextRow(
+      res.children.add(buildCardTextRow(
           "Successful:", Utilities.boolToString(model.launchSuccess)));
     }
     res.children.add(RaisedButton(
@@ -71,57 +73,11 @@ class LaunchCard extends StatelessWidget {
             children: <Widget>[
               Expanded(
                 flex: 3,
-                child: _buildImage(context)
+                child: buildImage(model.links.missionPatch, model.flightNumber.toString(), context)
               ),
               Expanded(flex: 6, child: _buildCardText(model, context))
             ],
           ),
         ));
-  }
-
-  Widget _buildImage(BuildContext context) {
-    if (null == model.links || null == model.links.missionPatch || model.links.missionPatch.isEmpty) {
-      return Hero(
-          tag: model.flightNumber,
-          child: SizedBox(
-              height: MediaQuery.of(context).size.height * 0.3,
-              width: MediaQuery.of(context).size.width,
-              child: DecoratedBox(
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage(AppConstants.ROCKET_IMAGE_PATH),
-                      )))));
-    } else {
-      return Hero(
-          tag: model.flightNumber,
-          child: CachedNetworkImage(
-            imageUrl: model.links.missionPatch,
-            placeholder: (context, url) => new CircularProgressIndicator(),
-            errorWidget: (context, url, error) => new Icon(Icons.error),
-          ));
-    }
-  }
-  
-  Widget _buildCardTextRow(String title, String value) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Text(
-          title,
-          style: TextStyle(
-              color: Colors.black87,
-              fontFamily: "Roboto",
-              fontWeight: FontWeight.bold,
-              fontSize: 16),
-        ),
-        Text(
-          value,
-          overflow: TextOverflow.ellipsis,
-          maxLines: 3,
-          style: TextStyle(
-              color: Colors.black38, fontFamily: "Roboto", fontSize: 16),
-        ),
-      ],
-    );
   }
 }

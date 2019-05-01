@@ -4,13 +4,15 @@ import 'package:intl/intl.dart';
 import 'package:spacex_universe/dataModels/rocket/RocketDataModel.dart';
 import 'package:spacex_universe/routes/SingleRocketRoute.dart';
 import 'package:spacex_universe/services/Utilities.dart';
+import 'package:spacex_universe/widgets/CommonCardView.dart';
 
-class RocketCard extends StatelessWidget {
+class RocketCard extends CommonCardView {
   const RocketCard({Key key, this.model})
       : super(key: key);
 
   final RocketDataModel model;
 
+  @override
   Widget build(BuildContext context) {
     return _buildCard(context);
   }
@@ -23,15 +25,7 @@ class RocketCard extends StatelessWidget {
             children: <Widget>[
               Expanded(
                 flex: 3,
-                child: new Hero(
-                    tag: model.rocketId,
-                    child: CachedNetworkImage(
-                      imageUrl: model.images[0],
-                      placeholder: (context, url) =>
-                      new CircularProgressIndicator(),
-                      errorWidget: (context, url, error) =>
-                      new Icon(Icons.error),
-                    )),
+                child: buildImage(model.images[0], model.rocketId, context)
               ),
               Expanded(flex: 6, child: _buildCardText(context))
             ],
@@ -52,11 +46,11 @@ class RocketCard extends StatelessWidget {
           fontWeight: FontWeight.bold,
           fontSize: 18),
     )));
-    w.add(_buildCardTextRow("First flight:", DateFormat('dd MMM yyyy').format(model.firstFlight)));
-    w.add(_buildCardTextRow("Active:", Utilities.boolToString(model.active)));
-    w.add(_buildCardTextRow("Launch cost:", "${model.launchCost}\$"));
-    w.add(_buildCardTextRow("Stages:", model.stages.toString()));
-    w.add(_buildCardTextRow("Boosters:", model.boosters.toString()));
+    w.add(buildCardTextRow("First flight:", DateFormat('dd MMM yyyy').format(model.firstFlight)));
+    w.add(buildCardTextRow("Active:", Utilities.boolToString(model.active)));
+    w.add(buildCardTextRow("Launch cost:", "${model.launchCost}\$"));
+    w.add(buildCardTextRow("Stages:", model.stages.toString()));
+    w.add(buildCardTextRow("Boosters:", model.boosters.toString()));
     w.add(RaisedButton(
       color: Colors.blue,
       textColor: Colors.white,
@@ -82,26 +76,4 @@ class RocketCard extends StatelessWidget {
     );
   }
 
-  Widget _buildCardTextRow(String title, String value) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Text(
-          title,
-          style: TextStyle(
-              color: Colors.black87,
-              fontFamily: "Roboto",
-              fontWeight: FontWeight.bold,
-              fontSize: 16),
-        ),
-        Text(
-          value,
-          overflow: TextOverflow.ellipsis,
-          maxLines: 3,
-          style: TextStyle(
-              color: Colors.black38, fontFamily: "Roboto", fontSize: 16),
-        ),
-      ],
-    );
-  }
 }
