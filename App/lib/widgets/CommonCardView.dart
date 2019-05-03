@@ -32,7 +32,7 @@ class CommonCardView extends StatelessWidget {
           tag: heroTag,
           child: CachedNetworkImage(
             imageUrl: imageUrl,
-            placeholder: (context, url) => new CircularProgressIndicator(),
+            placeholder: (context, url) => new Center(child:CircularProgressIndicator()),
             errorWidget: (context, url, error) => new Icon(Icons.error),
           ));
     }

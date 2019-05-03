@@ -102,7 +102,8 @@ class LaunchLinksDataModel
     result.wikipedia = json['wikipedia'];
     result.video = json['video_link'];
     result.youtubeId = json['youtube_id'];
-    result.flickrImages = (json['flickr_images'] as List<dynamic>).cast<String>();
+    //result.flickrImages = (json['flickr_images'] as List<dynamic>).cast<String>();
+    result.flickrImages = new List<String>.from(json['flickr_images']);
 
     return result;
   }

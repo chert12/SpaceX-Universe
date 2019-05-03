@@ -96,28 +96,12 @@ class LaunchViewWidget extends FullscreenInfoViewElement {
     w.add(buildLinkElement("Telemetry:", model.telemetryLink, context));
     if (null != model.links) {
       var links = model.links;
-      w.add(buildLinkElement("Article:", links.article, context));
-      w.add(buildLinkElement("Wikipedia:", links.wikipedia, context));
-      w.add(buildLinkElement("Presskit:", links.pressKit, context));
-      w.add(buildLinkElement("Youtube:", links.video, context));
-      w.add(buildLinkElement("Reddit:", links.redditCampaign, context));
-      if (null != links.flickrImages) {
-        w.add(PhotoViewGallery.builder(
-              scrollPhysics: const BouncingScrollPhysics(),
-              builder: (BuildContext context, int index) {
-                return PhotoViewGalleryPageOptions(
-                  imageProvider: AssetImage(links.flickrImages[index]),
-                  initialScale: PhotoViewComputedScale.contained * 0.8,
-                  heroTag: links.flickrImages[index],
-                );
-              },
-              itemCount: links.flickrImages.length,
-              //loadingChild: widget.loadingChild,
-              //backgroundDecoration: widget.backgroundDecoration,
-              //pageController: widget.pageController,
-              //onPageChanged: onPageChanged,
-            ));
-      }
+      //w.add(buildLinkElement("Article:", links.article, context));
+      //w.add(buildLinkElement("Wikipedia:", links.wikipedia, context));
+      //w.add(buildLinkElement("Presskit:", links.pressKit, context));
+      //w.add(buildLinkElement("Youtube:", links.video, context));
+      //w.add(buildLinkElement("Reddit:", links.redditCampaign, context));
+      w.add(buildImageGallery(model.links.flickrImages, context));
     }
 
     return ListView(children: w);
