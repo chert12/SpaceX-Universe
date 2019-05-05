@@ -74,10 +74,10 @@ abstract class FullscreenInfoViewElement extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 16),
               ),
-              Text(
+              Wrap(children:[Text(
                 value,
                 style: TextStyle(color: Colors.black38, fontSize: 16),
-              ),
+              )]),
             ],
           ),
           new Padding(
@@ -170,31 +170,10 @@ abstract class FullscreenInfoViewElement extends StatelessWidget {
         child:Container(
         height: 100,
         child: ListView(scrollDirection: Axis.horizontal, children: wList)));
-
-//    var pageOptions = new List<PhotoViewGalleryPageOptions>();
-//
-//    for (int i = 0; i < images.length; i++) {
-//      pageOptions.add(new PhotoViewGalleryPageOptions(
-//        imageProvider: CachedNetworkImageProvider(images[0]),
-//        heroTag: "imageGallery_$i",
-//      ));
-//    }
-//
-//    return Container(
-//      height: 250,
-//        child: PhotoViewGallery(
-//      pageOptions: pageOptions,
-//      loadingChild: new CircularProgressIndicator(),
-//      backgroundDecoration: const BoxDecoration(
-//        color: Colors.black,
-//      ),
-//      pageController: new PageController(initialPage: 0),
-//      //onPageChanged: onPageChanged,
-//    ));
   }
 
   @protected
-  Widget buildElementWithDescription(String description, String text) {
+  Widget buildElementWithDescription(String title, String text) {
     if (text == null) {
       return SizedBox.shrink();
     }
@@ -207,7 +186,7 @@ abstract class FullscreenInfoViewElement extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Text(
-                description,
+                title,
                 style: TextStyle(
                     color: Colors.black87,
                     fontWeight: FontWeight.bold,

@@ -6,26 +6,24 @@ class AppConstants
   static const String APPBAR_TITLE_LAUNCHES = "SpaceX launches";
   static const String APPBAR_TITLE_ROCKETS = "SpaceX rockets";
   static const String APPBAR_TITLE_ABOUT = "About SpaceX";
+  static const String APPBAR_TITLE_CAPSULES = "SpaceX capsules";
 
   //image names
   static const String ROCKET_IMAGE_PATH = "assets/rocket.png";
   static const String SPACEX_LOGO_IMAGE_PATH = "assets/spacex_logo.png";
 
-  //capsules
-  static const String API_GET_ALL_CAPSULES = "https://api.spacexdata.com/v3/capsules";
-  static const String API_GET_UPCOMING_CAPSULES = "https://api.spacexdata.com/v3/capsules/upcoming";
-  static const String API_GET_PAST_CAPSULES = "https://api.spacexdata.com/v3/capsules/past";
 
   static const String SERVER_ULR = "https://api.spacexdata.com";
   static const String API_VERSION = "/v3";
 
 
-  //launches
+  //apis
   static const String API_GET_LAST_LAUNCH = "/launches/latest";
   static const String API_GET_ALL_LAUNCHES = "/launches";
   static const String API_GET_ALL_ROCKETS = "/rockets";
   static const String API_GET_HISTORY = "/history";
   static const String API_GET_COMPANY_INFO = "/info";
+  static const String API_GET_ALL_CAPSULES = "/capsules";
 
   //texts
   static const String READ_MORE_SPACEX = "Read more\n on SpaceX";

@@ -35,7 +35,7 @@ class LaunchCard extends CommonCardView {
     );
     res.children.add(buildCardTextRow("Flight", "#${model.flightNumber}"));
     res.children.add(buildCardTextRow("Launch date:",
-        DateFormat('dd MMM yyyy \n kk:mm').format(model.launchDateLocal)));
+        DateFormat('dd MMM yyyy').format(model.launchDateLocal)));
     if (model.launchDateLocal.millisecondsSinceEpoch >
         DateTime
             .now()

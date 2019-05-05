@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:spacex_universe/dataModels/CapsuleDataModel.dart';
 import 'package:spacex_universe/dataModels/companyInfo/CompanyInfoDataModel.dart';
 import 'package:spacex_universe/dataModels/history/HistoryDataModel.dart';
 import 'package:spacex_universe/dataModels/launch/LaunchDataModel.dart';
@@ -88,6 +89,24 @@ class NetworkAdapter {
         debugPrint(e);
       }
       return new List<HistoryDataModel>();
+    } else {
+      throw Exception('Failed to load post');
+    }
+  }
+
+  Future<List<CapsuleDataModel>> getAllCapsules() async {
+    final response = await http.get(AppConstants.SERVER_ULR +
+        AppConstants.API_VERSION +
+        AppConstants.API_GET_ALL_CAPSULES);
+
+    if (response.statusCode == 200) {
+      try {
+        var js = json.decode(response.body);
+        return (js as List).map((e) => new CapsuleDataModel.fromJson(e)).toList();
+      } catch (e) {
+        debugPrint(e);
+      }
+      return new List<CapsuleDataModel>();
     } else {
       throw Exception('Failed to load post');
     }
