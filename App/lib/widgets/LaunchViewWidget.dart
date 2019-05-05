@@ -22,7 +22,7 @@ class LaunchViewWidget extends FullscreenInfoViewElement {
 
   Widget _buildCompleteUi(BuildContext context) {
     var w = List<Widget>();
-    w.add(buildImage(
+    w.add(buildUrlImage(
         model.links.missionPatch, model.flightNumber.toString(), context));
     w.add(buildListTitle(model.missionName));
     w.add(buildListElement(

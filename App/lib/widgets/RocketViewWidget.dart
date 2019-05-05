@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 import 'package:intl/intl.dart';
 import 'package:spacex_universe/dataModels/rocket/RocketDataModel.dart';
 import 'package:spacex_universe/services/AppConstants.dart';
@@ -18,7 +19,7 @@ class RocketViewWidget extends FullscreenInfoViewElement {
 
   Widget _buildCompleteUi(BuildContext context) {
     var w = List<Widget>();
-    w.add(buildImage(model.images[0], model.rocketId, context));
+    w.add(buildUrlImage(model.images[0], model.rocketId, context));
     w.add(buildListTitle(model.rocketName.toString()));
     w.add(buildListElement("Rocket type", model.rocketType));
     w.add(buildListElement(
@@ -26,7 +27,10 @@ class RocketViewWidget extends FullscreenInfoViewElement {
     w.add(buildListElement("Country:", model.country));
     w.add(buildListElement("Company:", model.company));
     w.add(buildListElement("Active", Utilities.boolToString(model.active)));
-    w.add(buildListElement("Launch cost:", "${model.launchCost} \$"));
+    FlutterMoneyFormatter fmf = FlutterMoneyFormatter(
+        amount: model.launchCost.toDouble()
+    );
+    w.add(buildListElement("Launch cost:", fmf.output.compactSymbolOnRight));
     w.add(buildListElement("Stages:", model.stages.toString()));
     w.add(buildListElement("Boosters:", model.boosters.toString()));
     w.add(buildListElement("Success rate:", "${model.successRate} %"));

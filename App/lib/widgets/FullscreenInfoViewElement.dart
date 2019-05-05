@@ -13,7 +13,7 @@ abstract class FullscreenInfoViewElement extends StatelessWidget {
   }
 
   @protected
-  Widget buildImage(String imageUrl, String heroTag, BuildContext context) {
+  Widget buildUrlImage(String imageUrl, String heroTag, BuildContext context) {
     if (null == imageUrl || imageUrl.isEmpty) {
       return Hero(
           tag: heroTag,
@@ -36,6 +36,22 @@ abstract class FullscreenInfoViewElement extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height * 0.3,
           ));
+    }
+  }
+
+  @protected
+  Widget buildInternalImage(String image, BuildContext context) {
+    if (null == image || image.isEmpty) {
+      return SizedBox.shrink();
+    } else {
+      return SizedBox(
+          height: MediaQuery.of(context).size.height * 0.3,
+          width: MediaQuery.of(context).size.width,
+          child: DecoratedBox(
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(image),
+                  ))));
     }
   }
 

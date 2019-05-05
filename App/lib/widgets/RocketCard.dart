@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 import 'package:intl/intl.dart';
 import 'package:spacex_universe/dataModels/rocket/RocketDataModel.dart';
 import 'package:spacex_universe/routes/SingleRocketRoute.dart';
@@ -48,7 +49,10 @@ class RocketCard extends CommonCardView {
     )));
     w.add(buildCardTextRow("First flight:", DateFormat('dd MMM yyyy').format(model.firstFlight)));
     w.add(buildCardTextRow("Active:", Utilities.boolToString(model.active)));
-    w.add(buildCardTextRow("Launch cost:", "${model.launchCost}\$"));
+    FlutterMoneyFormatter fmf = FlutterMoneyFormatter(
+        amount: model.launchCost.toDouble()
+    );
+    w.add(buildCardTextRow("Launch cost:", fmf.output.compactSymbolOnRight));
     w.add(buildCardTextRow("Stages:", model.stages.toString()));
     w.add(buildCardTextRow("Boosters:", model.boosters.toString()));
     w.add(RaisedButton(

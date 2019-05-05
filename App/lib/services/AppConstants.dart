@@ -5,9 +5,11 @@ class AppConstants
   static const String APPBAR_TITLE_LAST_LAUNCH = "Last launch";
   static const String APPBAR_TITLE_LAUNCHES = "SpaceX launches";
   static const String APPBAR_TITLE_ROCKETS = "SpaceX rockets";
+  static const String APPBAR_TITLE_ABOUT = "About SpaceX";
 
   //image names
   static const String ROCKET_IMAGE_PATH = "assets/rocket.png";
+  static const String SPACEX_LOGO_IMAGE_PATH = "assets/spacex_logo.png";
 
   //capsules
   static const String API_GET_ALL_CAPSULES = "https://api.spacexdata.com/v3/capsules";

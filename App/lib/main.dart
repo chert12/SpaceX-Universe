@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:spacex_universe/dataModels/history/HistoryDataModel.dart';
+import 'package:spacex_universe/routes/AboutSpacexRoute.dart';
 import 'package:spacex_universe/routes/AllLaunchesRoute.dart';
 import 'package:spacex_universe/routes/LastLaunchRoute.dart';
 import 'package:spacex_universe/routes/RocketsRoute.dart';
@@ -118,13 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 trailing: Icon(Icons.arrow_forward),
               ),
-              ListTile(
-                title: Text(
-                  "About SpaceX",
-                  style: TextStyle(color: Colors.white),
-                ),
-                trailing: Icon(Icons.arrow_forward),
-              ),
+              _buildDrawerElement("About SpaceX", AboutSpacexRoute()),
             ],
           )),
     );

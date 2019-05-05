@@ -50,7 +50,7 @@ class CompanyInfoAddressDataModel
 
   String toString()
   {
-    return "$address, $city, $state";
+    return "$address, \n$city, $state";
   }
 
   factory CompanyInfoAddressDataModel.fromJson(Map<String, dynamic> json)
