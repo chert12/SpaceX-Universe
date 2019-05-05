@@ -18,6 +18,7 @@ class RocketDataModel {
   RocketStageDataModel secondStage;
   RocketEnginesDataModel engines;
   List<String> images;
+  int landingLegs;
   String wikipedia;
   String description;
   String rocketId;
@@ -41,7 +42,7 @@ class RocketDataModel {
     result.height = RocketHeightDataModel.fromJson(json['height']);
     result.diameter = RocketDiameterDataModel.fromJson(json['diameter']);
     result.mass = RocketMassDataModel.fromJson(json['mass']);
-    result.payloads = (json['payload_weights'] as List<dynamic>).cast<RocketPayloadDataModel>();
+    result.payloads = (json['payload_weights'] as List).map((e) => new RocketPayloadDataModel.fromJson(e)).toList();
     result.firstStage = RocketStageDataModel.fromJson(json['first_stage']);
     result.secondStage = RocketStageDataModel.fromJson(json['second_stage']);
     result.engines = RocketEnginesDataModel.fromJson(json['engines']);
@@ -51,6 +52,8 @@ class RocketDataModel {
     result.rocketId = json['rocket_id'];
     result.rocketName = json['rocket_name'];
     result.rocketType = json['rocket_type'];
+    Map<String, dynamic> legsMap = json['landing_legs'];
+    result.landingLegs = legsMap['number'];
 
     return result;
   }

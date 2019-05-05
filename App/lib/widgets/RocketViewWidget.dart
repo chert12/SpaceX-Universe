@@ -31,15 +31,71 @@ class RocketViewWidget extends FullscreenInfoViewElement {
     w.add(buildListElement("Boosters:", model.boosters.toString()));
     w.add(buildListElement("Success rate:", "${model.successRate} %"));
     w.add(buildElementWithDescription("Description:", model.description));
-    w.add(buildListTitle("Height"));
-    w.add(buildListElement("Meters:", "${model.height.meters} m"));
-    w.add(buildListElement("Feet:", "${model.height.feet} ft"));
-    w.add(buildListTitle("Diameter"));
-    w.add(buildListElement("Meters:", "${model.diameter.meters} m"));
-    w.add(buildListElement("Feet:", "${model.diameter.feet} ft"));
-    w.add(buildListTitle("Mass"));
-    w.add(buildListElement("Kg:", "${model.mass.kg} kg"));
-    w.add(buildListElement("Lb:", "${model.mass.lb} lb"));
+    if(null != model.height) {
+      w.add(buildListTitle("Height"));
+      w.add(buildListElement("Meters:", "${model.height.meters} m"));
+      w.add(buildListElement("Feet:", "${model.height.feet} ft"));
+    }
+    if(null != model.diameter) {
+      w.add(buildListTitle("Diameter"));
+      w.add(buildListElement("Meters:", "${model.diameter.meters} m"));
+      w.add(buildListElement("Feet:", "${model.diameter.feet} ft"));
+    }
+    if(null != model.mass) {
+      w.add(buildListTitle("Mass"));
+      w.add(buildListElement("Kg:", "${model.mass.kg} kg"));
+      w.add(buildListElement("Lb:", "${model.mass.lb} lb"));
+    }
+    if(null != model.payloads && model.payloads.length > 0)
+      {
+        model.payloads.forEach((p) =>
+        {
+          w.add(buildListTitle("Payload #${model.payloads.indexOf(p)}")),
+          w.add(buildListElement("Orbit:", p.name)),
+          w.add(buildListElement("Mass:", p.massToString()))
+        });
+      }
+    if(null != model.firstStage)
+      {
+        var f = model.firstStage;
+        w.add(buildListTitle("First stage"));
+        w.add(buildListElement("Reusable:", Utilities.boolToString(f.reusable)));
+        w.add(buildListElement("Engines:", f.engines.toString()));
+        w.add(buildListElement("Fuel amount:", "${f.fuelAmount} tons"));
+        w.add(buildListElement("Burn time:", "${f.burnTime} sec"));
+      }
+    if(null != model.secondStage)
+    {
+    var s = model.secondStage;
+    w.add(buildListTitle("Second stage"));
+    w.add(buildListElement("Reusable:", Utilities.boolToString(s.reusable)));
+    w.add(buildListElement("Engines:", s.engines.toString()));
+    w.add(buildListElement("Fuel amount:", "${s.fuelAmount} tons"));
+    w.add(buildListElement("Burn time:", "${s.burnTime} sec"));
+    if(null != s.payloads.option_1 && s.payloads.option_1.isNotEmpty)
+      {
+        w.add(buildListElement("Payload #1", s.payloads.option_1));
+      }
+    if(null != s.payloads.option_2 && s.payloads.option_2.isNotEmpty)
+    {
+    w.add(buildListElement("Payload #2", s.payloads.option_2));
+    }
+  }
+
+    if(null != model.engines)
+      {
+        var e = model.engines;
+        w.add(buildListTitle("Engines"));
+        w.add(buildListElement("Count:", e.count.toString()));
+        w.add(buildListElement("Type:", e.type));
+        w.add(buildListElement("Version:", e.version));
+        w.add(buildListElement("Fisrt propellant:", e.propellant_1));
+        w.add(buildListElement("Second propellant:", e.propellant_2));
+      }
+
+    w.add(buildListTitle("Other"));
+    w.add(buildListElement("Landing legs:", model.landingLegs.toString()));
+    w.add(buildImageGallery(model.images, context));
 
     return ListView(children: w);
   }
