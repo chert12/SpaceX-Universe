@@ -50,15 +50,21 @@ abstract class FullscreenInfoViewElement extends StatelessWidget {
           child: DecoratedBox(
               decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage(image),
-                  ))));
+            image: AssetImage(image),
+          ))));
     }
   }
 
   @protected
-  Widget buildListElement(String title, String value) {
+  Widget buildListElement(String title, String value, {bool underline = true}) {
     if (title == null || value == null) {
       return SizedBox.shrink();
+    }
+    Widget line = new Padding(
+        padding: new EdgeInsets.only(top: 5),
+        child: Container(height: 1.0, color: Colors.black12));
+    if (!underline) {
+      line = SizedBox.shrink();
     }
     return new Padding(
       padding: new EdgeInsets.all(7),
@@ -74,15 +80,20 @@ abstract class FullscreenInfoViewElement extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 16),
               ),
-              Wrap(children:[Text(
-                value,
-                style: TextStyle(color: Colors.black38, fontSize: 16),
-              )]),
+              Flexible(
+                  child: Padding(
+                      padding: EdgeInsets.only(left: 40),
+                      child: Text(
+                        value,
+                        textAlign: TextAlign.justify,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 5,
+                        softWrap: false,
+                        style: TextStyle(color: Colors.black38, fontSize: 16),
+                      ))),
             ],
           ),
-          new Padding(
-              padding: new EdgeInsets.only(top: 5),
-              child: Container(height: 1.0, color: Colors.black12))
+          line
         ],
       ),
     );
@@ -166,10 +177,11 @@ abstract class FullscreenInfoViewElement extends StatelessWidget {
       ));
     }
     return Padding(
-        padding: EdgeInsets.only(top:5, bottom: 10),
-        child:Container(
-        height: 100,
-        child: ListView(scrollDirection: Axis.horizontal, children: wList)));
+        padding: EdgeInsets.only(top: 5, bottom: 10),
+        child: Container(
+            height: 100,
+            child:
+                ListView(scrollDirection: Axis.horizontal, children: wList)));
   }
 
   @protected

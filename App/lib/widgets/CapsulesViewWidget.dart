@@ -28,10 +28,10 @@ class CapsulesViewWidget extends FullscreenInfoViewElement {
     w.add(buildListElement("Landings:", capsule.landings.toString()));
     w.add(buildListElement("Reuse count:", capsule.reuseCount.toString()));
     if(null != capsule.details) {
-     w.add(buildListElement("Note:", capsule.details));
+     w.add(buildListElement("Note:", capsule.details, underline: false));
       //w.add(Text(capsule.details, style: TextStyle(
         //  fontSize: 13, color: Colors.black, fontStyle: FontStyle.italic),));
     }
-    return ExpansionTile(title: Text(capsule.serial), children: w);
+    return ExpansionTile(title: Text("Capsule serial: ${capsule.serial}"), children: w);
   }
 }
