@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:spacex_universe/dataModels/DragonDataModel.dart';
 import 'package:spacex_universe/dataModels/launch/LaunchDataModel.dart';
 import 'package:spacex_universe/services/AppConstants.dart';
 import 'package:spacex_universe/services/NetworkAdapter.dart';
 import 'package:spacex_universe/services/Utilities.dart';
+import 'package:spacex_universe/widgets/DragonViewWidget.dart';
 import 'package:spacex_universe/widgets/LaunchCard.dart';
 
-class AllLaunchesRoute extends StatefulWidget {
-  AllLaunchesRoute({Key key}) : super(key: key);
+class DragonsRoute extends StatefulWidget {
+  DragonsRoute({Key key}) : super(key: key);
 
   @override
-  _AllLaunchesRouteState createState() => _AllLaunchesRouteState();
+  _DragonsRouteState createState() => _DragonsRouteState();
 }
 
-class _AllLaunchesRouteState extends State<AllLaunchesRoute> {
+class _DragonsRouteState extends State<DragonsRoute> {
 //  Future<LaunchDataModel> launchModel;
   NetworkAdapter networkAdapter;
-  List<LaunchDataModel> _models;
+  List<DragonDataModel> _models;
 
 //
   @override
@@ -25,10 +27,10 @@ class _AllLaunchesRouteState extends State<AllLaunchesRoute> {
     super.initState();
     networkAdapter = new NetworkAdapter();
 
-    var d = networkAdapter.getAllLaunches();
-    var tmp = (List<LaunchDataModel> launches) {
+    var d = networkAdapter.getAllDragons();
+    var tmp = (List<DragonDataModel> value) {
       setState(() {
-        _models = launches;
+        _models = value;
       });
     };
 
@@ -48,41 +50,27 @@ class _AllLaunchesRouteState extends State<AllLaunchesRoute> {
     );
   }
 
-  Widget _buildPage(List<LaunchDataModel> models) {
-    var modelsUpcoming = List<LaunchDataModel>();
-    var modelsPast = List<LaunchDataModel>();
-    for (int i = 0; i < models.length; i++) {
-      var md = models[i];
-      if (md.launchDateLocal.millisecondsSinceEpoch >
-              DateTime.now().millisecondsSinceEpoch ||
-          md.launchSuccess == null) {
-        modelsUpcoming.add(md);
-      } else {
-        modelsPast.add(md);
-      }
-    }
+  Widget _buildPage() {
 
+    List<Widget> tabs = new List<Widget>();
+    List<Widget> pages = new List<Widget>();
+
+    _models.forEach((model) =>{
+      tabs.add(Tab(text: model.name)),
+    pages.add(DragonViewWidget(model: model))
+    });
+    
     return DefaultTabController(
-        length: 2,
+        length: _models.length,
         child: Scaffold(
             appBar: AppBar(
-              title: Text(AppConstants.APPBAR_TITLE_LAUNCHES),
+              title: Text(AppConstants.APPBAR_TITLE_DRAGONS),
               bottom: TabBar(
-                tabs: [
-                  Tab(
-                    text: "Upcoming",
-                  ),
-                  Tab(
-                    text: "Past",
-                  ),
-                ],
+                tabs:tabs,
               ),
             ),
             body: TabBarView(
-              children: [
-                _buildCompleteUi(modelsUpcoming),
-                _buildCompleteUi(modelsPast)
-              ],
+              children: pages,
             )));
   }
 
@@ -96,7 +84,7 @@ class _AllLaunchesRouteState extends State<AllLaunchesRoute> {
           //body: _buildFutureBuilder(networkAdapter.getAllLaunches()));
           body: Center(child: CircularProgressIndicator()));
     } else {
-      return _buildPage(_models);
+      return _buildPage();
     }
   }
 }

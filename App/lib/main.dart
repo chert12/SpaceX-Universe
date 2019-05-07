@@ -3,6 +3,7 @@ import 'package:spacex_universe/dataModels/history/HistoryDataModel.dart';
 import 'package:spacex_universe/routes/AboutSpacexRoute.dart';
 import 'package:spacex_universe/routes/AllLaunchesRoute.dart';
 import 'package:spacex_universe/routes/CapsulesRoute.dart';
+import 'package:spacex_universe/routes/DragonsRoute.dart';
 import 'package:spacex_universe/routes/LastLaunchRoute.dart';
 import 'package:spacex_universe/routes/RocketsRoute.dart';
 import 'package:spacex_universe/services/AppConstants.dart';
@@ -93,13 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
               _buildDrawerElement("Launches", AllLaunchesRoute()),
               _buildDrawerElement("Rockets", RocketsRoute()),
               _buildDrawerElement("Capsules", CapsulesRoute()),
-              ListTile(
-                title: Text(
-                  "Dragons",
-                  style: TextStyle(color: Colors.white),
-                ),
-                trailing: Icon(Icons.arrow_forward),
-              ),
+              _buildDrawerElement("Dragons", DragonsRoute()),
               ListTile(
                 title: Text(
                   "Launch pads",
