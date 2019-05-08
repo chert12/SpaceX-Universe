@@ -13,4 +13,9 @@ class Utilities {
       await launch(url);
     }
   }
+
+  static String createMapsUrl(double latitude, double longitude)
+  {
+    return "http://maps.google.com/?q=$latitude,$longitude";
+  }
 }

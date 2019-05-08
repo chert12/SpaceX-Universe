@@ -8,6 +8,7 @@ class AppConstants
   static const String APPBAR_TITLE_ABOUT = "About SpaceX";
   static const String APPBAR_TITLE_CAPSULES = "SpaceX capsules";
   static const String APPBAR_TITLE_DRAGONS = "Dragons";
+  static const String APPBAR_TITLE_LAUNCHPADS = "Launch pads";
 
   //image names
   static const String ROCKET_IMAGE_PATH = "assets/rocket.png";
@@ -26,6 +27,7 @@ class AppConstants
   static const String API_GET_COMPANY_INFO = "/info";
   static const String API_GET_ALL_CAPSULES = "/capsules";
   static const String API_GET_ALL_DRAGONS = "/dragons";
+  static const String API_GET_ALL_LAUNCHPADS = "/launchpads";
 
   //texts
   static const String READ_MORE_SPACEX = "Read more\n on SpaceX";
