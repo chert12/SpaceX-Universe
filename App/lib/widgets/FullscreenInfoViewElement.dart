@@ -121,10 +121,18 @@ abstract class FullscreenInfoViewElement extends StatelessWidget {
   }
 
   @protected
-  Widget buildLinkElement(String title, String link, BuildContext context) {
+  Widget buildLinkElement(String title, String link, BuildContext context,{bool underline = true}) {
     if (title == null || link == null || title.isEmpty || link.isEmpty) {
       return SizedBox.shrink();
     }
+
+    Widget line = new Padding(
+        padding: new EdgeInsets.only(top: 5),
+        child: Container(height: 1.0, color: Colors.black12));
+    if (!underline) {
+      line = SizedBox.shrink();
+    }
+
     return new Padding(
       padding: new EdgeInsets.all(7),
       child: Column(
@@ -149,9 +157,7 @@ abstract class FullscreenInfoViewElement extends StatelessWidget {
                   ),
                 ],
               )),
-          new Padding(
-              padding: new EdgeInsets.only(top: 5),
-              child: Container(height: 1.0, color: Colors.black12))
+          line
         ],
       ),
     );

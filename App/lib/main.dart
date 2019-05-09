@@ -4,6 +4,7 @@ import 'package:spacex_universe/routes/AboutSpacexRoute.dart';
 import 'package:spacex_universe/routes/AllLaunchesRoute.dart';
 import 'package:spacex_universe/routes/CapsulesRoute.dart';
 import 'package:spacex_universe/routes/DragonsRoute.dart';
+import 'package:spacex_universe/routes/LandpadsRoute.dart';
 import 'package:spacex_universe/routes/LastLaunchRoute.dart';
 import 'package:spacex_universe/routes/LaunchpadsRoute.dart';
 import 'package:spacex_universe/routes/RocketsRoute.dart';
@@ -97,13 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
               _buildDrawerElement("Capsules", CapsulesRoute()),
               _buildDrawerElement("Dragons", DragonsRoute()),
               _buildDrawerElement("Launch pads", LaunchpadsRoute()),
-              ListTile(
-                title: Text(
-                  "Landing pads",
-                  style: TextStyle(color: Colors.white),
-                ),
-                trailing: Icon(Icons.arrow_forward),
-              ),
+              _buildDrawerElement("Landing pads", LandpadsRoute()),
               _buildDrawerElement("About SpaceX", AboutSpacexRoute()),
             ],
           )),

@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:spacex_universe/dataModels/CapsuleDataModel.dart';
 import 'package:spacex_universe/dataModels/DragonDataModel.dart';
+import 'package:spacex_universe/dataModels/LandpadDataModel.dart';
 import 'package:spacex_universe/dataModels/LaunchpadDataModel.dart';
 import 'package:spacex_universe/dataModels/companyInfo/CompanyInfoDataModel.dart';
 import 'package:spacex_universe/dataModels/history/HistoryDataModel.dart';
@@ -145,6 +146,24 @@ class NetworkAdapter {
         debugPrint(e);
       }
       return new List<LaunchpadDataModel>();
+    } else {
+      throw Exception('Failed to load post');
+    }
+  }
+
+  Future<List<LandpadDataModel>> getAllLandpads() async {
+    final response = await http.get(AppConstants.SERVER_ULR +
+        AppConstants.API_VERSION +
+        AppConstants.API_GET_ALL_LANDPADS);
+
+    if (response.statusCode == 200) {
+      try {
+        var js = json.decode(response.body);
+        return (js as List).map((e) => new LandpadDataModel.fromJson(e)).toList();
+      } catch (e) {
+        debugPrint(e);
+      }
+      return new List<LandpadDataModel>();
     } else {
       throw Exception('Failed to load post');
     }
