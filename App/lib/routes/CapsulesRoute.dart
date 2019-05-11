@@ -18,12 +18,18 @@ class CapsulesRoute extends StatefulWidget {
 class _CapsulesState extends State<CapsulesRoute> {
   List<CapsuleDataModel> _models;
 
+  NetworkAdapter _networkAdapter;
+
   @override
   void initState() {
     super.initState();
-    var networkAdapter = new NetworkAdapter();
+    _networkAdapter = new NetworkAdapter(context);
+    _initData();
+  }
 
-    var d = networkAdapter.getAllCapsules();
+  void _initData()
+  {
+    var d = _networkAdapter.getAllCapsules(retryFunction: _initData);
     var tmp = (List<CapsuleDataModel> value) {
       setState(() {
         _models = value;

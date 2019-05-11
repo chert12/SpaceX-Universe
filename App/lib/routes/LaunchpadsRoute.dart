@@ -20,12 +20,18 @@ class LaunchpadsRoute extends StatefulWidget {
 class _LaunchpadsState extends State<LaunchpadsRoute> {
   List<LaunchpadDataModel> _models;
 
+  NetworkAdapter _networkAdapter;
+
   @override
   void initState() {
     super.initState();
-    var networkAdapter = new NetworkAdapter();
+    _networkAdapter = new NetworkAdapter(context);
+    _initData();
+  }
 
-    var d = networkAdapter.getAllLaunchPads();
+  void _initData()
+  {
+    var d = _networkAdapter.getAllLaunchPads(retryFunction: _initData);
     var tmp = (List<LaunchpadDataModel> value) {
       setState(() {
         _models = value;

@@ -35,5 +35,6 @@ class AppConstants
   static const String READ_MORE_SPACEX = "Read more\n on SpaceX";
   static const String READ_MORE_REDDIT = "Read more\n on Reddit";
   static const String READ_MORE_WIKIPEDIA = "Read more\n on Wikipedia";
+  static const String NO_INTERNET_CONNECTION = "No Internet connection. Make sure Wi-Fi or cellular data is turned on, then try again.";
 
 }

@@ -12,41 +12,41 @@ class LastLaunchRoute extends StatefulWidget {
 }
 
 class _LastLaunchRouteState extends State<LastLaunchRoute> {
-  NetworkAdapter networkAdapter;
+  NetworkAdapter _networkAdapter;
+  LaunchDataModel _info;
 
-//
   @override
   void initState() {
     super.initState();
-    networkAdapter = new NetworkAdapter();
+    _networkAdapter = new NetworkAdapter(context);
+    _initData();
+  }
+
+  void _initData() {
+    var d = _networkAdapter.getLastLaunch(retryFunction: _initData);
+    var tmp = (LaunchDataModel value) {
+      setState(() {
+        _info = value;
+      });
+    };
+
+    d.then(tmp);
   }
 
   Widget _buildCompleteUi(LaunchDataModel model) {
-    return LaunchViewWidget(model:model);
-  }
-
-
-  Widget _buildFutureBuilder(Future<LaunchDataModel> modelFuture) {
-    return new FutureBuilder<LaunchDataModel>(
-      future: modelFuture,
-      builder: (BuildContext context, AsyncSnapshot<LaunchDataModel> snapshot) {
-        if (snapshot.hasData) {
-          return _buildCompleteUi(snapshot.data);
-        } else {
-          return new Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-      },
-    );
+    return LaunchViewWidget(model: model);
   }
 
   @override
   Widget build(BuildContext context) {
+    Widget body = Center(child: CircularProgressIndicator());
+    if (_info != null) {
+      body = _buildCompleteUi(_info);
+    }
     return Scaffold(
         appBar: AppBar(
           title: Text(AppConstants.APPBAR_TITLE_LAST_LAUNCH),
         ),
-        body: _buildFutureBuilder(networkAdapter.getLastLaunch()));
+        body: body);
   }
 }

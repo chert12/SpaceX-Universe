@@ -42,9 +42,14 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    var networkAdapter = new NetworkAdapter();
+    _initData();
+  }
 
-    var d = networkAdapter.getAllHistoryEvents();
+  void _initData()
+  {
+    var networkAdapter = new NetworkAdapter(context);
+
+    var d = networkAdapter.getAllHistoryEvents(retryFunction: _initData);
     var tmp = (List<HistoryDataModel> historyEvents) {
       setState(() {
         _historyModels = historyEvents;

@@ -21,13 +21,18 @@ class _DragonsRouteState extends State<DragonsRoute> {
   NetworkAdapter networkAdapter;
   List<DragonDataModel> _models;
 
-//
+  NetworkAdapter _networkAdapter;
+
   @override
   void initState() {
     super.initState();
-    networkAdapter = new NetworkAdapter();
+    _networkAdapter = new NetworkAdapter(context);
+    _initData();
+  }
 
-    var d = networkAdapter.getAllDragons();
+  void _initData()
+  {
+    var d = _networkAdapter.getAllDragons(retryFunction: _initData);
     var tmp = (List<DragonDataModel> value) {
       setState(() {
         _models = value;

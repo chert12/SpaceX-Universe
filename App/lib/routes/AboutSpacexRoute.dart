@@ -16,12 +16,18 @@ class AboutSpacexRoute extends StatefulWidget {
 class _AboutSpacexState extends State<AboutSpacexRoute> {
   CompanyInfoDataModel _info;
 
+  NetworkAdapter _networkAdapter;
+
   @override
   void initState() {
     super.initState();
-    var networkAdapter = new NetworkAdapter();
+    _networkAdapter = new NetworkAdapter(context);
+    _initData();
+  }
 
-    var d = networkAdapter.getCompanyInfo();
+  void _initData()
+  {
+    var d = _networkAdapter.getCompanyInfo(retryFunction: _initData);
     var tmp = (CompanyInfoDataModel value) {
       setState(() {
         _info = value;

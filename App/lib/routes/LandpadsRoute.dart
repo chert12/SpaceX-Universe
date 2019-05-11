@@ -22,12 +22,18 @@ class LandpadsRoute extends StatefulWidget {
 class _LandpadsState extends State<LandpadsRoute> {
   List<LandpadDataModel> _models;
 
+  NetworkAdapter _networkAdapter;
+
   @override
   void initState() {
     super.initState();
-    var networkAdapter = new NetworkAdapter();
+    _networkAdapter = new NetworkAdapter(context);
+    _initData();
+  }
 
-    var d = networkAdapter.getAllLandpads();
+  void _initData()
+  {
+    var d = _networkAdapter.getAllLandpads(retryFunction: _initData);
     var tmp = (List<LandpadDataModel> value) {
       setState(() {
         _models = value;

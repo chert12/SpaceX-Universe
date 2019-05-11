@@ -14,13 +14,18 @@ class RocketsRoute extends StatefulWidget {
 class _RocketsRouteState extends State<RocketsRoute> {
 
   List<RocketDataModel> _models;
+  NetworkAdapter _networkAdapter;
 
   @override
   void initState() {
     super.initState();
-    var networkAdapter = new NetworkAdapter();
+    _networkAdapter = new NetworkAdapter(context);
+    _initData();
+  }
 
-    var d = networkAdapter.getAllRockets();
+  void _initData()
+  {
+    var d = _networkAdapter.getAllRockets(retryFunction: _initData);
     var tmp = (List<RocketDataModel> value) {
       setState(() {
         _models = value;

@@ -19,16 +19,21 @@ class _AllLaunchesRouteState extends State<AllLaunchesRoute> {
   NetworkAdapter networkAdapter;
   List<LaunchDataModel> _models;
 
-//
+  NetworkAdapter _networkAdapter;
+
   @override
   void initState() {
     super.initState();
-    networkAdapter = new NetworkAdapter();
+    _networkAdapter = new NetworkAdapter(context);
+    _initData();
+  }
 
-    var d = networkAdapter.getAllLaunches();
-    var tmp = (List<LaunchDataModel> launches) {
+  void _initData()
+  {
+    var d = _networkAdapter.getAllLaunches(retryFunction: _initData);
+    var tmp = (List<LaunchDataModel> value) {
       setState(() {
-        _models = launches;
+        _models = value;
       });
     };
 
